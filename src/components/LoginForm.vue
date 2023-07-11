@@ -8,9 +8,9 @@
                     </h1>
                     <form class="space-y-4 md:space-y-6" action="#">
                         <div>
-                            <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-                            <input type="username" v-model="username" name="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="username" required="">
-                            <span class="text-red-600" v-if="errors.includes('username')">Please Fill Username</span>
+                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                            <input type="email" v-model="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="email" required="">
+                            <span class="text-red-600" v-if="errors.includes('email')">Please Fill Email</span>
                         </div>
                         <div>
                             <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
@@ -36,7 +36,7 @@ import { useAuthStore } from '@/stores/auth';
 export default {
     data(){
         return {
-            username: null,
+            email: null,
             password: null,
             errors : [],
             baseUrl: import.meta.env.VITE_BASE_URL
@@ -47,7 +47,7 @@ export default {
             await this.validateRequest()
             try{
                 let response = await axios.post(this.baseUrl+userRoutes.loginUser,{
-                    username: this.username,
+                    email: this.email,
                     password:  this.password
                 });
                 if(response.data.status == true){
@@ -58,8 +58,8 @@ export default {
                         confirmButtonText: 'OK',
                     });
                     const authStore = useAuthStore();
-                    authStore.login(response.data.access_token,response.data.username);
-                    this.$router.push({name: 'users'});
+                    authStore.login(response.data.token,response.data.user);
+                    this.$router.push({name: 'dilfoods'});
                 }else{
                     throw new Error("Invalid Credentials! Please try again.")
                 }
@@ -76,7 +76,7 @@ export default {
         validateRequest(){
             this.errors = [];
             if(!this.username){
-                this.errors?.push('username');
+                this.errors?.push('email');
             }
             if(!this.password){
                 this.errors?.push('password');

@@ -11,20 +11,12 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/chat/:userid',
-      name: 'chat',
+      path: '/dilfoods',
+      name: 'dilfoods',
       meta : {
         requiresAuth: true
       },
-      component: () => import('../views/Chat.vue')
-    },
-    {
-      path: '/users',
-      name: 'users',
-      meta : {
-        requiresAuth: true
-      },
-      component: () => import('../views/Users.vue')
+      component: () => import('../views/Dilfoods.vue')
     },
     {
       path: '/register',
@@ -56,7 +48,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !isAuthenticated()) {
     next({ name: 'Login' });
   }else if(!to.meta.requiresAuth && isAuthenticated()){
-    next({name: 'users'})
+    next({name: 'dilfoods'})
   } else {
     next(); // Proceed to the next route
   }

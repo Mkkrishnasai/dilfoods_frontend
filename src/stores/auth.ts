@@ -5,14 +5,14 @@ import axios from 'axios';
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         token: localStorage.getItem('token') || '',
-        username: localStorage.getItem('username') || '',
+        user: localStorage.getItem('user') || '',
     }),
     actions: {
-        login(userToken: string, userUsername: string) {
+        login(userToken: string, user: string) {
           this.token = userToken;
-          this.username = userUsername;
+          this.user = user;
           localStorage.setItem('token', userToken);
-          localStorage.setItem('username', userUsername);
+          localStorage.setItem('username', user);
           axios.interceptors.request.use(
               (config) => {
                   if (this.token) {
@@ -28,9 +28,9 @@ export const useAuthStore = defineStore('auth', {
         },
         logout() {
           this.token = '';
-          this.username = '';
+          this.user = '';
           localStorage.removeItem('token');
-          localStorage.removeItem('username');
+          localStorage.removeItem('user');
         },
       },
 });
